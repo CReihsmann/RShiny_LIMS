@@ -11,16 +11,37 @@ library(shiny)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-
-    output$distPlot <- renderPlot({
-
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
-
-    })
+  
+  validate_credentials <- eventReactive(input$login_button,
+                                        {
+                                          response = GET(lims_url,
+                                                         add_headers(.headers = headers),
+                                                         authenticate(user = input$lims_email,
+                                                                      password = input$lims_password,
+                                                                      type = 'basic'))
+                                          
+                                          validate <- F
+                                          
+                                          if(response$status_code == 200) {
+                                            validate <- T
+                                          }
+                                        }
+    
+  )
+  
+  observeEvent(validate_credentials(), {
+    shinyjs::hide(id = 'login')
+  })
+  
+  output$display_app <- renderUI({
+    req(validate_credentials())
+    
+    div(
+      class = "bg-success",
+      id = "success_basic",
+      h4("Access confirmed!"),
+      p("Welcome to your basically-secured application!")
+    )
+  })
 
 })
