@@ -11,29 +11,7 @@ library(shiny)
 source('module_login.R')
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-  
-  # validate_credentials <- eventReactive(input$login_button,
-  #                                       {
-  #                                         response = GET(lims_url,
-  #                                                        add_headers(.headers = headers),
-  #                                                        authenticate(user = input$lims_email,
-  #                                                                     password = input$lims_password,
-  #                                                                     type = 'basic'))
-  #                                         
-  #                                         validate <- F
-  #                                         
-  #                                         if(response$status_code == 200) {
-  #                                           validate <- T
-  #                                         }
-  #                                       }
-  #   
-  # )
-  # 
-  # observeEvent(validate_credentials(), {
-  #   shinyjs::hide(id = 'login')
-  # })
-  # 
-
+ 
   
   validate_password_module <- callModule(
     module = validate_credentials,
@@ -41,14 +19,16 @@ shinyServer(function(input, output) {
   )
   
   username <- callModule(
-    module = username,
+    module = username_func,
     id = 'module_login'
   )
   
   password <- callModule(
-    module = password,
+    module = password_func,
     id = 'module_login'
   )
+  
+  output$username <- renderText(username())
   
   output$display_app <- renderUI({
     req(validate_password_module())

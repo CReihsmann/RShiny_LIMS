@@ -21,19 +21,22 @@ data <- content(response, as = 'text') %>%
 class(data[2])
 api_data <- data[[2]]
 
-uw_cols <- c('EntityTypeName', 'Id', 'Sequence', 'Created', 'Modified', 'Active', 'LikedBy', 
-             'FollowedBy', 'Locked', 'DONOR_CREATED', 'HLA_DOCUMENT@odata.mediaContentType',
-             'PATIENT_DONOR_SHEET@odata.mediaContentType', 'BLOOD_LOT_COUNT', 
-             'CI_DONOR_DISEASE_UPDATED_STATUS', 'PATIENT_CHART@odata.mediaContentType',
-             'FACS_LOT_COUNT', 'ISLET_LOT_COUNT', 'ISLET_TRANSPLANT_LOT_COUNT', 'LYMPH_LOT_COUNT',
-             'PANCREAS_LOT_COUNT', 'SAMPLE_LABEL_ABBREVIATION_COMBINED', 'SPLEEN_LOT_COUNT', 
-             'CI_DONORTYPE','CI_donor_plasma', 'CI_DONOR_PUBLICATIONS', 'CI_DONOR_SUMMARY_RECEIVED',
-             'COMMENTS_HLA', 'COMMENTS_PATIENT_CHART', 'CI_DONOR_CHART_RECEIVED', 'SEROLOGY_HBCAB_TOTAL')
+#------lims to api metadata conversion csv
+
+col_conv <- read_csv('../data/20221206-col_conversions.csv')
+w_api_cols <- col_conv$API_col
+w_lims_cols <- col_conv$LIMS_col
+
+#-----filtering down api_data
+
+filt_cols <- api_data %>% 
+  select(w_api_cols)
+
+
 #Donor_processing_from_lot needs to be parsed out and counted
 #-----made column for age in years & fixed discrepencies in isolation centers
-select_data <- api_data %>% 
-  select(where(~sum(!is.na(.x)) > 0)) %>% 
-  select(!contains(uw_cols)) %>% 
+
+select_data <- filt_cols %>% 
   mutate(AGE_IN_YEARS = round(if_else((CI_DONOR_AGE_UNITS == 'months'), (CI_DONOR_AGE/12), 
                        if_else((CI_DONOR_AGE_UNITS == 'days'), (CI_DONOR_AGE/365), CI_DONOR_AGE)), 4)) %>% 
   mutate(ISLETS_ISOLATION_CENTER = if_else(str_detect(ISLETS_ISOLATION_CENTER, 'Pennsyl') == T, 'University of Pennsylvania',
@@ -44,8 +47,7 @@ select_data <- api_data %>%
                                                                     if_else(str_detect(ISLETS_ISOLATION_CENTER, 'The\\sScharp|(?<!\\s)Scharp') == T, 'Scharp-Lacy Research Institute',
                                                                             if_else(str_detect(ISLETS_ISOLATION_CENTER, 'Alberta') == T, 'University of Alberta', ISLETS_ISOLATION_CENTER))))))))
 
-#-----parsing out DONOR_PROCESSING_FROM_LOT        
-test <- select_data
+#-----parsing out DONOR_PROCESSING_FROM_LOT      
 
 lot_processing <- select_data$DONOR_PROCESSING_FROM_LOT
 lot_processing <- lot_processing[!is.na(lot_processing)]

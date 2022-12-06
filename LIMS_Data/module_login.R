@@ -70,14 +70,14 @@ validate_credentials <- function(input, ouput, session) {
   
 }
 
-username <- function(input, output, session) {
+username_func <- function(input, output, session) {
   eventReactive(input$login_button,
                 {
                   input$lims_email
                 })
   
 }
-password <- function(input, output, session) {
+password_func <- function(input, output, session) {
   eventReactive(input$login_button,
                 {
                   input$lims_password
