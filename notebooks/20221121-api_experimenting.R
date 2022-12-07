@@ -2,6 +2,7 @@ library(httr)
 library(tidyverse)
 library(jsonlite)
 library(rvest)
+library(lubridate)
 
 url = 'https://na1.platformforscience.com/609546918/odata/DONOR'
 
@@ -67,4 +68,20 @@ for (i in processing_unique) {
 select_data <- select_data %>% 
   mutate(RNA = RNA - `RNA-sequencing`) %>% 
   select(-DONOR_PROCESSING_FROM_LOT)
+
+date_cols = c('DATE_PANCREAS_ISLET_RECEIVED','CI_DATE_PANCREAS_PROCESSED')
+date_time_cols = c('DATE___TIME_OF_DEATH', 'DATE___TIME_OF_CROSS_CLAMP')
+date_time_cols_2 = c('TIME_PANCREAS_PROCUREMENT')
+to_numeric = c('C_PEPTIDE_LEVELS', 'COLD_ISCHEIC_TIME')
+# hla_chr_num_conv = c('DONOR_A1', 'DONOR_A2', 'DONOR_B1', 'DONOR_B2')
+
+
+select_data <- select_data %>% 
+  mutate_at(vars(contains(date_cols)), ymd) %>% 
+  mutate_at(vars(contains(date_time_cols)), ymd_hms) %>% 
+  mutate_at(vars(contains(date_time_cols_2)), mdy_hm) %>% 
+  mutate(C_PEPTIDE_LEVEL = if_else(C_PEPTIDE_LEVEL == '<0.02', '0.01', C_PEPTIDE_LEVEL)) %>% 
+  mutate_at(vars(contains(to_numeric)), as.numeric) 
+
+write_csv(select_data, '../data/20221207-fixed_cols.csv')
 
