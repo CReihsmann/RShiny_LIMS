@@ -46,7 +46,10 @@ select_data <- filt_cols %>%
                                                     if_else(str_detect(ISLETS_ISOLATION_CENTER, 'Southern California') == T, 'Southern California',
                                                             if_else(str_detect(ISLETS_ISOLATION_CENTER, 'Prodo') == T, 'Prodo',
                                                                     if_else(str_detect(ISLETS_ISOLATION_CENTER, 'The\\sScharp|(?<!\\s)Scharp') == T, 'Scharp-Lacy Research Institute',
-                                                                            if_else(str_detect(ISLETS_ISOLATION_CENTER, 'Alberta') == T, 'University of Alberta', ISLETS_ISOLATION_CENTER))))))))
+                                                                            if_else(str_detect(ISLETS_ISOLATION_CENTER, 'Alberta') == T, 'University of Alberta',
+                                                                                    if_else(str_detect(ISLETS_ISOLATION_CENTER, 'Pittsburgh') == T, 'University of Pittsburgh',
+                                                                                            if_else(str_detect(ISLETS_ISOLATION_CENTER, 'Cincinnati') == T, "Cincinnati Children's",
+                                                                                                    if_else(str_detect(ISLETS_ISOLATION_CENTER, 'Tennessee') == T, 'Tennessee Donor Services',ISLETS_ISOLATION_CENTER)))))))))))
 
 #-----parsing out DONOR_PROCESSING_FROM_LOT      
 
