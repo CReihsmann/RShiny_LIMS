@@ -39,6 +39,20 @@ login_ui <- function(id, title) {
   )
 }
 
+plot_login_ui <- function(id, title) {
+  
+  ns <- NS(id) #namespace id
+  
+  div(
+    id = ns('plot_login'),
+    style = "width: 500px; max-width: 100%; margin: 0 auto;",
+    
+    div(
+      class = 'well',
+      h3(class = 'text-center', title)
+    )
+  )
+}
 
 # SERVER component
 
@@ -61,6 +75,7 @@ validate_credentials <- function(input, ouput, session) {
                   #hide login when user confirmed 
                   if(validate) {
                     shinyjs::hide(id = 'login')
+                    shinyjs::hide(id = 'plot_login')
                   }
                   
                   validate

@@ -11,7 +11,8 @@ library(shiny)
 source('module_login.R')
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
- 
+  
+  # source('plots.R', local = T)
   
   validate_password_module <- callModule(
     module = validate_credentials,
@@ -31,6 +32,17 @@ shinyServer(function(input, output) {
   output$username <- renderText(username())
   
   output$display_app <- renderUI({
+    req(validate_password_module())
+    
+    div(
+      class = "bg-success",
+      id = "success_basic",
+      h4("Access confirmed!"),
+      p("Welcome to your basically-secured application!")
+    )
+  })
+  
+  output$display_plots <- renderUI({
     req(validate_password_module())
     
     div(

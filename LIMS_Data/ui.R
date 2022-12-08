@@ -16,8 +16,13 @@ shinyUI(
       uiOutput(outputId = 'display_app')
     ),
     tabPanel(
-      title = 'test',
-      textOutput('username')
+      title = 'Plots',
+      useShinyjs(),
+      
+      plot_login_ui(id='module_login', title = 'Navigate to Home Tab \n to Login'),
+      
+      uiOutput(outputId = 'display_plots')
+      
     )
   )
 )
