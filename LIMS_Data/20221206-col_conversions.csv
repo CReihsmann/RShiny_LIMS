@@ -1,0 +1,94 @@
+﻿LIMS_col,group,API_col
+Name,All,Name
+Barcode,All,Barcode
+Donor UNOS ID,All,CI_DONOR_ID
+Secondary ID/Reference,All,CI_DONOR_SECONDARY_ID
+Freezer Box Location(s),All,CI_DONOR_FB_LOCATION
+Donor Disease,Donor Information,CI_DONOR_DISEASE
+Disease Duration (yrs),Donor Information,CI_DONOR_DISEASE_DURATION
+Date Pancreas/Islets received,Donor Information,DATE_PANCREAS_ISLET_RECEIVED
+Date Pancreas Processed,Donor Information,CI_DATE_PANCREAS_PROCESSED
+Age,Donor Information,CI_DONOR_AGE
+Age Units,Donor Information,CI_DONOR_AGE_UNITS
+Gender,Donor Information,CI_DONOR_GENDER
+Race,Donor Information,CI_DONOR_RACE
+Height (cm),Donor Information,CI_DONOR_HEIGHT
+Weight (kg),Donor Information,CI_DONOR_WEIGHT
+BMI,Donor Information,CI_DONOR_BMI_MANUAL
+Cause of Death,Donor Information,CI_DONOR_CAUSEOFDEATH
+Time on Ventilator (days),Donor Information,CI_DONOR_TIMEONVENT
+Pancreatic Tissue,Donor Information,CI_DONOR_PANCREATICTISSUE
+Islets_bool,Donor Information,CI_DONOR_ISLETS
+Perifused_bool,Donor Information,CI_WERE_ISLETS_PERIFUSED_BOOLEAN
+Isolation Center,Donor Information,ISLETS_ISOLATION_CENTER
+Plasma_bool,Donor Information,CI_DONOR_PLASMA
+Serum_bool,Donor Information,CI_DONOR_SERUM
+Blood Group,Donor Information,CI_DONOR_BLOODGROUP
+Blood Group Subtypes,Donor Information,CI_DONOR_BLOODGROUP_SUBTYPE
+HbA1c,Donor Information,HBA1C
+C-peptide Level (ng/mL),Donor Information,C_PEPTIDE_LEVEL
+Autoantibody IAA,Donor Information,AUTOANTIBODY_IAA
+Autoantibody GAD65,Donor Information,AUTOANTIBODY_GAD65
+Autoantibody IA-2,Donor Information,AUTOANTIBODY_IA_2
+Autoantibody ZnT8,Donor Information,AUTOANTIBODY_ZNT8
+A1,HLA,DONOR_A1
+A2,HLA,DONOR_A2
+B1,HLA,DONOR_B1
+B2,HLA,DONOR_B2
+BW4,HLA,DONOR_BW4
+BW6,HLA,DONOR_BW6
+CW1,HLA,DONOR_CW1
+CW2,HLA,DONOR_CW2
+DR1,HLA,DONOR_DR1
+DR2,HLA,DONOR_DR2
+DR51,HLA,DONOR_DR51
+DR52,HLA,DONOR_DR52
+DR53,HLA,DONOR_DR53
+DPA1-1,HLA,DONOR_DPA1_1
+DPA1-2,HLA,DONOR_DPA1_2
+DPB1-1,HLA,DONOR_DPB1_1
+DPB1-2,HLA,DONOR_DPB1_2
+DQA1-1,HLA,DONOR_DQA1_1
+DQA1-2,HLA,DONOR_DQA1_2
+DQ1 (DQB1),HLA,DONOR_DQ1
+DQ2 (DQB1),HLA,DONOR_DQ2__DQB1_
+Date/Time of Death ,Organ Procurement,DATE___TIME_OF_DEATH
+Date/Time of Cross-Clamp,Organ Procurement,DATE___TIME_OF_CROSS_CLAMP
+Time of Pancreas Procurement,Organ Procurement,TIME_PANCREAS_PROCUREMENT
+Pancreas Weight (g),Organ Procurement,CI_PANCREAS_WEIGHT
+Cold ischemic Time (hrs),Organ Procurement,COLD_ISCHEMIC_TIME
+Warm ischemic Time (hrs),Organ Procurement,WARM_ISCHEMIC_TIME
+Islet Culture Time (hrs),Organ Procurement,ISLET_CULTURE_TIME
+Hospital Medications,Patient Chart,CI_DONOR_HOSPITAL_MEDICATIONS
+Home Medications,Patient Chart,CI_DONOR_HOME_MEDICATIONS
+Taking Insulin_bool,Patient Chart,CI_DONOR_DIABETIC
+Past Medical History,Patient Chart,CI_DONOR_PAST_MEDICAL_HISTORY
+Cigarette Use (>20 pack years),Patient Chart,CIGARETTE_USE
+Social Drug Use,Patient Chart,CI_DONOR_SOCIAL_DRUG_USE
+Heavy Alcohol (2+ drinks/daily),Patient Chart,HEAVY_ALCOHOL
+Serology - HIV 1/2,Patient Chart,SEROLOGY_HIV_1_2
+Serology - HBsAg,Patient Chart,SEROLOGY_HBSAG
+Serology - HBsAb,Patient Chart,SEROLOGY_HBSAB
+Serology HBcAb Total,Patient Chart,SEROLOGY_HBCAB_TOTAL
+Serology - HBcAb IgG,Patient Chart,SEROLOGY_HBCAB_IGG
+Serology - HBcAb IgM,Patient Chart,SEROLOGY_HBCAB_IGM
+Serology - HCV,Patient Chart,SEROLOGY_HCV
+Serology - RPR/STS,Patient Chart,SEROLOGY_RPR_STS
+Serology - CMV,Patient Chart,SEROLOGY_CMV
+Serology - HTLV1/2,Patient Chart,SEROLOGY_HTLV1_2
+Serology - EBV IgG,Patient Chart,SEROLOGY_EBV_IGG
+Comments_Donor Info,Donor Information,COMMENTS_DONOR_INFORMATION
+Serology - EBV IgM,Patient Chart,SEROLOGY_EBV_IGM
+Diabetic Status Abbr,System,DIABETIC_STATUS_ABBREVIATION
+Comments_Patient chart,Patient Chart,COMMENTS_PATIENT_CHART
+Gender Abbr,System,GENDER_ABBREVIATION
+Age Abbr,System,AGE_ABBREVIATION
+# Blood lots,Sample Lot count,BLOOD_LOT_COUNT
+# FACS lots,Sample Lot count,FACS_LOT_COUNT
+# Islet lots,Sample Lot count,ISLET_LOT_COUNT
+# Islet Transplant Lots,Sample Lot count,ISLET_TRANSPLANT_LOT_COUNT
+Processing,System,DONOR_PROCESSING_FROM_LOT
+# Lymph Node Lots,Sample Lot count,LYMPH_LOT_COUNT
+GEO Accession Number,Donor Information,CI_GEO_ACCESSION_NUMBER
+# Pancreas Lots,Sample Lot count,PANCREAS_LOT_COUNT
+# Spleen Lots,Sample Lot count,SPLEEN_LOT_COUNT

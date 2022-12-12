@@ -1,16 +1,16 @@
 output$barChart <- renderPlotly({
   
-  test <- graph_data %>% 
+  test <- plot_df() %>% 
     filter(!is.na(ISLETS_ISOLATION_CENTER)) %>% 
     group_by(YEAR, ISLETS_ISOLATION_CENTER) %>% 
     summarise(centers = n()) 
-  test_2 <- graph_data %>% 
+  test_2 <- plot_df() %>% 
     filter(is.na(ISLETS_ISOLATION_CENTER)) %>% 
     mutate(ISLETS_ISOLATION_CENTER = replace_na(ISLETS_ISOLATION_CENTER, 'NA')) %>% 
     group_by(YEAR, ISLETS_ISOLATION_CENTER) %>% 
     summarise(centers = n()) 
   
-  plot_ly() %>% 
+  fig <- plot_ly() %>% 
     add_trace(y = ~test$YEAR, x = ~test$centers, type = 'bar', color = ~test$ISLETS_ISOLATION_CENTER,
               hovertemplate = paste(
                 '<b><i>Count</i>: %{x}'
@@ -23,5 +23,7 @@ output$barChart <- renderPlotly({
               marker = list(color = '#79cdcd')) %>% 
     layout(barmode = ('stack'),
            plot_bgcolor = '#F5F5F5')
+  
+  fig
   
 })

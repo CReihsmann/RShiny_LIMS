@@ -12,12 +12,18 @@ source('module_login.R')
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   
-  # source('plots.R', local = T)
+  source('plots.R', local = T)
+  source('api_filter.R', local = T)
   
   validate_password_module <- callModule(
     module = validate_credentials,
     id = 'module_login'
   )
+  
+  # data_module <- callModule(
+  #   module = generate_data,
+  #   id = 'module_login'
+  # )
   
   username <- callModule(
     module = username_func,
@@ -45,12 +51,18 @@ shinyServer(function(input, output) {
   output$display_plots <- renderUI({
     req(validate_password_module())
     
-    div(
-      class = "bg-success",
-      id = "success_basic",
-      h4("Access confirmed!"),
-      p("Welcome to your basically-secured application!")
-    )
-  })
+    tabsetPanel(type = 'tabs',
+                tabPanel('Barcharts',
+                         plotlyOutput('barChart')),
+                         # dataTableOutput('table')),
+                tabPanel('Histograms'),
+                tabPanel('Boxplots'))
 
+  })
+  
+ 
+  output$table <-renderDataTable({plot_df()})
+  
+  output$text <- renderText(username())
+  
 })
