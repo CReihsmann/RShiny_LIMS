@@ -55,7 +55,6 @@ imported_data <- reactive({
   date_time_cols = c('DATE___TIME_OF_DEATH', 'DATE___TIME_OF_CROSS_CLAMP')
   date_time_cols_2 = c('TIME_PANCREAS_PROCUREMENT')
   to_numeric = c('C_PEPTIDE_LEVELS', 'COLD_ISCHEIC_TIME')
-  # hla_chr_num_conv = c('DONOR_A1', 'DONOR_A2', 'DONOR_B1', 'DONOR_B2')
   
   
   select_data <- select_data %>% 

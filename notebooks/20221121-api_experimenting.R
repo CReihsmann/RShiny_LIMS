@@ -8,19 +8,19 @@ url = 'https://na1.platformforscience.com/609546918/odata/DONOR'
 
 username <- 'chunhua.dai@vanderbilt.edu'
 password <- 'Core#2017'
-response = GET(url,
-               add_headers(.headers = c('Content-Type' = 'application/json;odata.metadata=minimal;charset=UTF-8',
-                                        'Prefer'='odata.maxpagesize=1500')),
-               authenticate(username,
-                           password,
-                           type = 'basic'))
+response = GET(data_url,
+               add_headers(.headers = headers),
+               authenticate(user = username,
+                            password = password,
+                            type = 'basic'))
 response$status_code
 
 data <- content(response, as = 'text') %>% 
   fromJSON()
 
 class(data[2])
-api_data <- data[[2]]
+class(data[[2]])
+api_data <- as_tibble(data[[2]])
 
 #------lims to api metadata conversion csv
 
@@ -33,9 +33,7 @@ w_lims_cols <- col_conv$LIMS_col
 filt_cols <- api_data %>% 
   select(w_api_cols)
 
-
-#Donor_processing_from_lot needs to be parsed out and counted
-#-----made column for age in years & fixed discrepencies in isolation centers
+#-----made column for age in years & fixed discrepancies in isolation centers
 
 select_data <- filt_cols %>% 
   mutate(AGE_IN_YEARS = round(if_else((CI_DONOR_AGE_UNITS == 'months'), (CI_DONOR_AGE/12), 

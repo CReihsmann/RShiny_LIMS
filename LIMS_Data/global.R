@@ -9,6 +9,7 @@ library(tidyverse)
 library(jsonlite)
 library(rvest)
 library(plotly)
+library(lubridate)
 
 login_url = 'https://na1.platformforscience.com/609546918/odata/$metadata'
 

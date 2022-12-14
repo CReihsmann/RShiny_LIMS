@@ -94,3 +94,29 @@ lims_data %>%
 ages <- lims_data %>% 
   select(AGE_IN_YEARS, AGE_GROUPS) %>% 
   filter(AGE_IN_YEARS < 10)
+
+test <- graph_data %>% 
+  filter(!is.na(ISLETS_ISOLATION_CENTER)) %>%
+  group_by(ISLETS_ISOLATION_CENTER) %>% 
+  summarise(centers = n()) 
+test_2 <- graph_data %>%
+  filter(is.na(ISLETS_ISOLATION_CENTER)) %>%
+  mutate(ISLETS_ISOLATION_CENTER = replace_na(ISLETS_ISOLATION_CENTER, 'NA')) %>%
+  group_by(ISLETS_ISOLATION_CENTER) %>%
+  summarise(centers = n())
+
+plot_ly() %>% 
+  add_trace(y = ~test$ISLETS_ISOLATION_CENTER, x = ~test$centers, type = 'bar',
+            hovertemplate = paste(
+              '<b><i>Count</i>: %{x}'
+            ), 
+            colors = 'Set1',
+            name = 'ISLET_ISOLATION_CENTER') %>% 
+  add_trace(y = ~test_2$ISLETS_ISOLATION_CENTER, x = ~test_2$centers, type = 'bar',
+            hovertemplate = paste(
+              '<b><i>Count</i>: %{x}'
+            ),
+            marker = list(color = '#79cdcd'),
+            name = 'NA') %>%
+  layout(barmode = ('stack'),
+         plot_bgcolor = '#F5F5F5')

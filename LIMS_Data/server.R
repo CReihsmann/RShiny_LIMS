@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+library(shinydashboard)
 source('module_login.R')
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -53,15 +54,42 @@ shinyServer(function(input, output) {
     
     tabsetPanel(type = 'tabs',
                 tabPanel('Barcharts',
-                         plotlyOutput('barChart')),
-                         # dataTableOutput('table')),
+                         sidebarPanel(
+                           width = 3,
+                           radioButtons(
+                             'bar_primary',
+                             'Primary Filter',
+                             choices = list('Age Group' = 'AGE_GROUPS',
+                                            'Race' = 'CI_DONOR_RACE',
+                                            'Isolation Center' = 'ISLETS_ISOLATION_CENTER',
+                                            'Year Processed' = 'YEAR',
+                                            'Disease Status' = 'CI_DONOR_DISEASE'),
+                                       ),
+                           radioButtons(
+                             'bar_secondary',
+                             'Secondary Filter',
+                             choices = list('None' = '',
+                                            'Sex' = 'CI_DONOR_GENDER',
+                                            'Age Group' = 'AGE_GROUPS',
+                                            'Race' = 'CI_DONOR_RACE',
+                                            'Isolation Center' = 'ISLETS_ISOLATION_CENTER',
+                                            'Year Processed' = 'YEAR',
+                                            'Disease Status' = 'CI_DONOR_DISEASE')
+                           )
+                                      ),
+                         mainPanel(
+                           plotlyOutput('barChart')
+                           # dataTableOutput('table')
+                           )
+                ),
+                # dataTableOutput('table')),
                 tabPanel('Histograms'),
                 tabPanel('Boxplots'))
-
+    
   })
   
- 
-  output$table <-renderDataTable({plot_df()})
+  
+  output$table <-renderDataTable({imported_data()})
   
   output$text <- renderText(username())
   
