@@ -1,4 +1,3 @@
-library(shiny)
 source('module_login.R')
 
 shinyUI(

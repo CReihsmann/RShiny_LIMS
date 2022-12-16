@@ -1,6 +1,7 @@
 library(tidyverse)
 library(ggplot2)
 library(plotly)
+library(lubridate)
 
 lims_data <- read_csv('../data/20221207-fixed_cols.csv')
 
@@ -120,3 +121,26 @@ plot_ly() %>%
             name = 'NA') %>%
   layout(barmode = ('stack'),
          plot_bgcolor = '#F5F5F5')
+
+#-----HISTOGRAMS
+
+# numeric_cols <- 
+lims_data %>% 
+  select(where(is.numeric)) %>% 
+  colnames()
+
+test <- lims_data %>% 
+  select(numeric_cols, graph_cols) %>% 
+  select(!where(is.Date))
+
+test %>% 
+  filter(CI_DONOR_GENDER != 'Unknown') %>% 
+  ggplot(aes(x=CI_DONOR_AGE, color = CI_DONOR_GENDER)) +
+  geom_histogram(bins = 50, position = 'dodge', alpha = 0.5)+
+  scale_color_viridis_d(option = 'magma') +
+  scale_fill_viridis_d(option = 'magma')
+
+numeric_cols
+class(numeric_cols)
+class(as.list(numeric_cols))
+list(numeric_cols)

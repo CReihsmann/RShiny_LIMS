@@ -21,6 +21,7 @@ data <- content(response, as = 'text') %>%
 class(data[2])
 class(data[[2]])
 api_data <- as_tibble(data[[2]])
+write_csv(api_data, '../data/all_data.csv')
 
 #------lims to api metadata conversion csv
 

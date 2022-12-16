@@ -53,43 +53,75 @@ shinyServer(function(input, output) {
     req(validate_password_module())
     
     tabsetPanel(type = 'tabs',
-                tabPanel('Barcharts',
-                         sidebarPanel(
-                           width = 3,
-                           radioButtons(
-                             'bar_primary',
-                             'Primary Filter',
-                             choices = list('Age Group' = 'AGE_GROUPS',
-                                            'Race' = 'CI_DONOR_RACE',
-                                            'Isolation Center' = 'ISLETS_ISOLATION_CENTER',
-                                            'Year Processed' = 'YEAR',
-                                            'Disease Status' = 'CI_DONOR_DISEASE'),
-                                       ),
-                           radioButtons(
-                             'bar_secondary',
-                             'Secondary Filter',
-                             choices = list('None' = '',
-                                            'Sex' = 'CI_DONOR_GENDER',
-                                            'Age Group' = 'AGE_GROUPS',
-                                            'Race' = 'CI_DONOR_RACE',
-                                            'Isolation Center' = 'ISLETS_ISOLATION_CENTER',
-                                            'Year Processed' = 'YEAR',
-                                            'Disease Status' = 'CI_DONOR_DISEASE')
-                           )
-                                      ),
-                         mainPanel(
-                           plotlyOutput('barChart')
-                           # dataTableOutput('table')
-                           )
+                tabPanel(
+                  'Barcharts',
+                  sidebarPanel(
+                    width = 3,
+                    radioButtons(
+                      'bar_primary',
+                      'Primary Filter',
+                      choices = list('Age Groups',
+                                     'Race',
+                                     'Isolation Center',
+                                     'Year',
+                                     'Donor Disease'),
+                    ),
+                    radioButtons(
+                      'bar_secondary',
+                      'Secondary Filter',
+                      choices = list('None' = '',
+                                     'Gender',
+                                     'Age Groups',
+                                     'Race',
+                                     'Isolation Center',
+                                     'Year',
+                                     'Donor Disease')
+                    )
+                  ),
+                  mainPanel(
+                    plotOutput('barChart')
+                    # dataTableOutput('table')
+                  )
                 ),
-                # dataTableOutput('table')),
-                tabPanel('Histograms'),
+                tabPanel(
+                  'Histograms',
+                  sidebarPanel(
+                    selectizeInput(
+                      'numeric_choices',
+                      'Numeric Filter',
+                      choices = as.list(numeric_cols),
+                      options = list(
+                        placeholder = 'Please select Numeric Column',
+                        onInitialize = I('function() { this.setValue (""); }')
+                        )
+                    ),
+                    sliderInput(
+                      'bin_slider',
+                      'Number of Bins',
+                      min = 30,
+                      max = 100,
+                      value = 30
+                    ),
+                    selectizeInput(
+                      'histo_initial_filt',
+                      'Filter By',
+                      choices = as.list(histo_filt),
+                      options = list(
+                        placeholder = 'Select filter',
+                        onInitialize = I('function() { this.setValue (""); }')
+                      )
+                    ),
+                  ),
+                  mainPanel(
+                    plotOutput('histogram')
+                  )
+                  ),
                 tabPanel('Boxplots'))
     
   })
   
   
-  output$table <-renderDataTable({imported_data()})
+  output$table <-renderDataTable({plot_df()})
   
   output$text <- renderText(username())
   
