@@ -17,23 +17,23 @@ imported_data <- reactive({
   
   colnames(filt_cols) = w_lims_cols
   filt_cols
-    
+  
   
   #-----made column for age in years & fixed discrepencies in isolation centers
   
   select_data <- filt_cols %>% 
     mutate(`Age (years)` = round(if_else((`Age Units` == 'months'), (Age/12), 
-                                        if_else((`Age Units` == 'days'), (Age/365), Age)), 4)) %>% 
+                                         if_else((`Age Units` == 'days'), (Age/365), Age)), 4)) %>% 
     mutate(`Isolation Center` = if_else(str_detect(`Isolation Center`, 'Pennsyl') == T, 'University of Pennsylvania',
-                                             if_else(str_detect(`Isolation Center`, 'Louisville') == T, 'University of Louisville',
-                                                     if_else(str_detect(`Isolation Center`, 'UCSF') == T, 'USCF',
-                                                             if_else(str_detect(`Isolation Center`, 'Southern California') == T, 'Southern California',
-                                                                     if_else(str_detect(`Isolation Center`, 'Prodo') == T, 'Prodo',
-                                                                             if_else(str_detect(`Isolation Center`, 'The\\sScharp|(?<!\\s)Scharp') == T, 'Scharp-Lacy',
-                                                                                     if_else(str_detect(`Isolation Center`, 'Alberta') == T, 'University of Alberta',
-                                                                                             if_else(str_detect(`Isolation Center`, 'Pittsburgh') == T, 'University of Pittsburgh',
-                                                                                                     if_else(str_detect(`Isolation Center`, 'Cincinnati') == T, "Cincinnati Children's",
-                                                                                                             if_else(str_detect(`Isolation Center`, 'Tennessee') == T, 'Tennessee Donor Services',`Isolation Center`)))))))))))%>%
+                                        if_else(str_detect(`Isolation Center`, 'Louisville') == T, 'University of Louisville',
+                                                if_else(str_detect(`Isolation Center`, 'UCSF') == T, 'USCF',
+                                                        if_else(str_detect(`Isolation Center`, 'Southern California') == T, 'Southern California',
+                                                                if_else(str_detect(`Isolation Center`, 'Prodo') == T, 'Prodo',
+                                                                        if_else(str_detect(`Isolation Center`, 'The\\sScharp|(?<!\\s)Scharp') == T, 'Scharp-Lacy',
+                                                                                if_else(str_detect(`Isolation Center`, 'Alberta') == T, 'University of Alberta',
+                                                                                        if_else(str_detect(`Isolation Center`, 'Pittsburgh') == T, 'University of Pittsburgh',
+                                                                                                if_else(str_detect(`Isolation Center`, 'Cincinnati') == T, "Cincinnati Children's",
+                                                                                                        if_else(str_detect(`Isolation Center`, 'Tennessee') == T, 'Tennessee Donor Services',`Isolation Center`)))))))))))%>%
     mutate(`Age Groups` = cut(`Age (years)`, 
                               breaks = c(0,10,20,30,40,50,60,70,80,90,100),
                               labels = c('0-10','11-20','21-30','31-40','41-50','51-60','61-70','71-80','81-90','90+'))) %>% 
@@ -76,7 +76,7 @@ imported_data <- reactive({
 
 bargraph_df <- reactive({
   
-
+  
   graph_data <- imported_data()%>%
     select(contains(graph_cols)) 
 })
@@ -92,5 +92,16 @@ histo_df <- reactive({
   graph_data <- imported_data() %>% 
     select(numeric_cols, graph_cols) %>% 
     select(!where(is.Date))
-    
+  
+})
+
+histo_filters <- observeEvent(req(input$histo_initial_filt!=""), {
+  updateSelectizeInput(
+    inputId = 'histo_initial_filt_choices',
+    choices = histo_df() %>% select(input$histo_initial_filt) %>% unique() %>% as.list(),#unique(histo_df()$input$histo_initial_filt)),
+    options = list(
+      placeholder = 'Please Select Group Above',
+      onInitialize = I('function() { this.setValue (""); }')
+    )
+  )
 })

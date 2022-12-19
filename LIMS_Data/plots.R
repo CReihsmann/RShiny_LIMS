@@ -31,7 +31,7 @@ output$barChart <- renderPlot({
 output$histogram <- renderPlot({
   
   histo_df() %>% 
-    # filter(Gender != 'Unknown') %>% 
+    filter(Gender != 'Unknown') %>% 
     ggplot(aes(x=!!as.name(input$numeric_choices))) + #, color = Gender)) +
     geom_histogram(bins = input$bin_slider, position = 'dodge', alpha = 0.5)+
     scale_color_viridis_d(option = 'magma') +

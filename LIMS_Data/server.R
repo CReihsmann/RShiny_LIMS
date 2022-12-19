@@ -104,13 +104,24 @@ shinyServer(function(input, output) {
                     ),
                     selectizeInput(
                       'histo_initial_filt',
-                      'Filter By',
+                      'Category to filter by',
                       choices = as.list(histo_filt),
                       options = list(
                         placeholder = 'Select filter',
                         onInitialize = I('function() { this.setValue (""); }')
                       )
                     ),
+                    selectizeInput(
+                      'histo_initial_filt_choices',
+                      'Choices to filter by',
+                      choices = NULL,
+                      # choices=as.list(histo_filters()),
+                      options = list(
+                        placeholder = 'Please Select Group Above',
+                        onInitialize = I('function() { this.setValue (""); }')
+                      ),
+                      multiple = T
+                    )
                   ),
                   mainPanel(
                     plotOutput('histogram')
