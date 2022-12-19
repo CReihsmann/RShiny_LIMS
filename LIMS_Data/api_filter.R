@@ -59,7 +59,7 @@ imported_data <- reactive({
   select_data <- select_data %>% 
     mutate(RNA = RNA - `RNA-sequencing`) %>% 
     select(-Processing) %>% 
-    rename(`isolated T` = `isolated T-cells`)
+    rename(`isolated T-cells` = `isolated T`)
   
   date_cols = c('Date Pancreas/Islets received','Date Pancreas Processed')
   date_time_cols = c('Date/Time of Cross-Clamp', 'Date/Time of Cross-Clamp')

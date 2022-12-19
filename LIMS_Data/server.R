@@ -21,11 +21,6 @@ shinyServer(function(input, output) {
     id = 'module_login'
   )
   
-  # data_module <- callModule(
-  #   module = generate_data,
-  #   id = 'module_login'
-  # )
-  
   username <- callModule(
     module = username_func,
     id = 'module_login'
@@ -93,7 +88,7 @@ shinyServer(function(input, output) {
                       options = list(
                         placeholder = 'Please select Numeric Column',
                         onInitialize = I('function() { this.setValue (""); }')
-                        )
+                      )
                     ),
                     sliderInput(
                       'bin_slider',
@@ -139,13 +134,31 @@ shinyServer(function(input, output) {
                   mainPanel(
                     plotOutput('histogram')
                   )
-                  ),
+                ),
                 tabPanel('Boxplots'))
     
   })
   
+  output$display_tables <- renderUI({
+    req(validate_password_module())
+    
+    tabsetPanel(type = 'tabs',
+                tabPanel(
+                  'Category',
+                  sidebarPanel(
+                    width = 3
+                  ),
+                  mainPanel(dataTableOutput('table'))
+                ),
+                tabPanel(
+                  'Personalized',
+                  sidebarPanel()
+                )
+    )
+  })
   
-  output$table <-renderDataTable({plot_df()})
+  
+  output$table <-renderDataTable({imported_data()})
   
   output$text <- renderText(username())
   
