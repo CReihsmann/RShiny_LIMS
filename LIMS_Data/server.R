@@ -115,12 +115,25 @@ shinyServer(function(input, output) {
                       'histo_initial_filt_choices',
                       'Choices to filter by',
                       choices = NULL,
-                      # choices=as.list(histo_filters()),
                       options = list(
                         placeholder = 'Please Select Group Above',
                         onInitialize = I('function() { this.setValue (""); }')
                       ),
                       multiple = T
+                    ),
+                    selectizeInput(
+                      'histo_group',
+                      'Group By',
+                      choices = as.list(histo_filt),
+                      options = list(
+                        placeholder = 'Select',
+                        onInitialize = I('function() { this.setValue (""); }')
+                      )
+                    ),
+                    radioButtons(
+                      'histo_orientation',
+                      'Layout',
+                      choices = list('dodge', 'identity', 'stack')
                     )
                   ),
                   mainPanel(

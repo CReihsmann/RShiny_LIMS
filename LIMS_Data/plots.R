@@ -5,14 +5,14 @@ output$barChart <- renderPlot({
   
   if (secondary != '') {
     bargraph_df() %>% 
-    ggplot(aes(x = fct_infreq(!!as.name(primary), ordered = F), fill = !!as.name(secondary))) +
-    geom_bar()+
-    coord_flip() +
-    labs(x = primary)+
-    scale_x_discrete(labels = function(x) str_wrap(x, width = 15)) +
-    scale_fill_discrete(labels = function(x) str_wrap(x, width = 15)) +
-    theme(legend.spacing.y = unit(0.15, 'cm')) +
-    guides(fill = guide_legend(byrow = T))
+      ggplot(aes(x = fct_infreq(!!as.name(primary), ordered = F), fill = !!as.name(secondary))) +
+      geom_bar()+
+      coord_flip() +
+      labs(x = primary)+
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 15)) +
+      scale_fill_discrete(labels = function(x) str_wrap(x, width = 15)) +
+      theme(legend.spacing.y = unit(0.15, 'cm')) +
+      guides(fill = guide_legend(byrow = T))
   }
   else {
     bargraph_df() %>% 
@@ -30,11 +30,29 @@ output$barChart <- renderPlot({
 
 output$histogram <- renderPlot({
   
-  histo_df() %>% 
-    filter(Gender != 'Unknown') %>% 
-    ggplot(aes(x=!!as.name(input$numeric_choices))) + #, color = Gender)) +
-    geom_histogram(bins = input$bin_slider, position = 'dodge', alpha = 0.5)+
-    scale_color_viridis_d(option = 'magma') +
-    scale_fill_viridis_d(option = 'magma')
-  
+  if(is.null(input$histo_initial_filt_choices)) {
+    histo_df() %>% 
+      ggplot(aes(x=!!as.name(input$numeric_choices))) + 
+      geom_histogram(bins = input$bin_slider, position = input$histo_orientation, alpha = 0.5)+
+      scale_color_viridis_d(option = 'magma') +
+      scale_fill_viridis_d(option = 'magma')
+  }
+  else if(input$histo_group == '') {
+    histo_df() %>% 
+      filter(!!as.name(input$histo_initial_filt) == input$histo_initial_filt_choices) %>% 
+      ggplot(aes(x=!!as.name(input$numeric_choices))) + 
+      geom_histogram(bins = input$bin_slider, alpha = 0.5)+
+      scale_color_viridis_d(option = 'magma') +
+      scale_fill_viridis_d(option = 'magma')
+  }
+  else {
+    histo_df() %>% 
+      filter(!!as.name(input$histo_initial_filt) == input$histo_initial_filt_choices) %>% 
+      ggplot(aes(x=!!as.name(input$numeric_choices), fill = !!as.name(input$histo_group), color = !!as.name(input$histo_group))) + 
+      geom_histogram(bins = input$bin_slider, position = input$histo_orientation, alpha = 0.5)+
+      scale_color_viridis_d(option = 'magma',
+                            labels = function(x) str_wrap(x, width = 15)) +
+      scale_fill_viridis_d(option = 'magma',
+                           labels = function(x) str_wrap(x, width = 15)) 
+  }
 })
