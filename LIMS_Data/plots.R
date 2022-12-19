@@ -52,7 +52,6 @@ output$histogram <- renderPlot({
       geom_histogram(bins = input$bin_slider, position = input$histo_orientation, alpha = 0.5)+
       scale_color_viridis_d(option = 'magma',
                             labels = function(x) str_wrap(x, width = 15)) +
-      scale_fill_viridis_d(option = 'magma',
-                           labels = function(x) str_wrap(x, width = 15)) 
+      scale_fill_viridis_d(option = 'magma') 
   }
 })

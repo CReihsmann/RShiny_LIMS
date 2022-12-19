@@ -47,7 +47,7 @@ imported_data <- reactive({
   lot_processing_list <- str_split(lot_processing_list, '-')
   processing_unique <- sapply(lot_processing_list, unique)
   
-  remove <- c('PFA', 'fixed CMC', 'embedded', 'unknown', 'sequencing')
+  remove <- c('PFA', 'fixed CMC', 'embedded', 'unknown', 'sequencing', 'cells')
   processing_unique <- append(processing_unique[! processing_unique %in% remove], c('PFA-fixed CMC-embedded', 'RNA-sequencing'))
   
   for (i in processing_unique) {
@@ -58,7 +58,8 @@ imported_data <- reactive({
   }
   select_data <- select_data %>% 
     mutate(RNA = RNA - `RNA-sequencing`) %>% 
-    select(-Processing)
+    select(-Processing) %>% 
+    rename(`isolated T` = `isolated T-cells`)
   
   date_cols = c('Date Pancreas/Islets received','Date Pancreas Processed')
   date_time_cols = c('Date/Time of Cross-Clamp', 'Date/Time of Cross-Clamp')
