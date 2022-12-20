@@ -15,6 +15,7 @@ shinyServer(function(input, output) {
   
   source('plots.R', local = T)
   source('api_filter.R', local = T)
+  source('datatables.R', local = T)
   
   validate_password_module <- callModule(
     module = validate_credentials,
@@ -146,20 +147,39 @@ shinyServer(function(input, output) {
                 tabPanel(
                   'Category',
                   sidebarPanel(
-                    width = 3
+                    width = 3,
+                    radioButtons(
+                      'lims_div',
+                      'Category',
+                      choices = list('Basic Info',
+                                     'Donor Info',
+                                     'HLA',
+                                     'Patient Info',
+                                     'Sample Lots',
+                                     'Processed',
+                                     'All')
+                    )
                   ),
-                  mainPanel(dataTableOutput('table'))
+                  mainPanel(dataTableOutput('lims_table'))
                 ),
                 tabPanel(
                   'Personalized',
-                  sidebarPanel()
+                  sidebarPanel(
+                    width = 3,
+                    selectizeInput(
+                      'personalized',
+                      'Choose columns',
+                      choices = NULL,
+                      options = list(
+                        placeholder = 'Press Apply',
+                        onInitialize = I('function() { this.setValue (""); }')
+                    ),
+                    actionButton(
+                      'select_cols',
+                      'Apply'
+                    )
+                  )
                 )
     )
   })
-  
-  
-  output$table <-renderDataTable({imported_data()})
-  
-  output$text <- renderText(username())
-  
 })

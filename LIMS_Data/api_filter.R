@@ -99,10 +99,22 @@ histo_df <- reactive({
 histo_filters <- observeEvent(req(input$histo_initial_filt!=""), {
   updateSelectizeInput(
     inputId = 'histo_initial_filt_choices',
-    choices = histo_df() %>% select(input$histo_initial_filt) %>% unique() %>% as.list(),#unique(histo_df()$input$histo_initial_filt)),
+    choices = histo_df() %>% select(input$histo_initial_filt) %>% unique() %>% as.list(),
     options = list(
       placeholder = 'Please Select Group Above',
       onInitialize = I('function() { this.setValue (""); }')
     )
   )
 })
+#Wrong, need to change observe event to reactive on filtered dataframe and change apply button to updating dataframe
+personalized_dt <- observeEvent(input$select_cols, {
+  updateSelectInput(
+    inputId = 'personalized',
+    choices = imported_data %>% colnames(),
+    options = list(
+      placeholder = 'Please Select Columns',
+      onInitialize = I('function() { this.setValue (""); }')
+    )
+  )
+}
+)

@@ -45,5 +45,5 @@ stock_processed_cols <- c('frozen fixed','flash frozen','paraffin embedding','se
                           'pseudoislets','cytospin','islet distribution','spleen distribution','lymph node distribution',
                           'isolated T-cells','matrix','single cell RNA','aDIST','Frozen Unpurified','flash frozen CMC',
                           'PFA-fixed CMC-embedded','RNA-sequencing')
+long_col_names <- c('Freezer Box Location(s)', 'Cause of Death', 'Hospital Medications', 'Home Medications', 'Past Medical History', 'Comments_Donor Info')
 
- 
