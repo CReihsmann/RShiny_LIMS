@@ -106,15 +106,50 @@ histo_filters <- observeEvent(req(input$histo_initial_filt!=""), {
     )
   )
 })
-#Wrong, need to change observe event to reactive on filtered dataframe and change apply button to updating dataframe
-personalized_dt <- observeEvent(input$select_cols, {
-  updateSelectInput(
-    inputId = 'personalized',
-    choices = imported_data %>% colnames(),
-    options = list(
-      placeholder = 'Please Select Columns',
-      onInitialize = I('function() { this.setValue (""); }')
-    )
-  )
-}
-)
+df_cols <- reactive({
+    # colnames(imported_data())
+    base_cols <- c('Name', 'Secondary ID/Reference', 'Barcode', 'Gender', 
+                   'Race', 'Age (years)', 'Donor Disease')
+    imported_data() %>% 
+        select(!contains(base_cols)) %>% 
+        colnames()
+})
+
+selected_cols <- eventReactive(input$select_cols, {
+    input$personalized
+})
+
+all_cols <- reactive({
+    base_cols <- c('Name', 'Secondary ID/Reference', 'Barcode', 'Gender', 
+                   'Race', 'Age (years)', 'Donor Disease')
+    
+    if(is.null(input$personalized)) {
+        all_cols <- base_cols
+    }
+    else {
+        all_cols <- c(base_cols, input$personalized)
+    }
+})
+donors <- reactive({
+    if(is.null(input$donors_personalized)) {
+        unique(imported_data()$Name)
+    }
+    else {
+        filtered <- imported_data() %>% 
+            filter(Name %in% input$donors_personalized)
+        unique(filtered$Name)
+    }
+})
+
+personalized_df <- reactive({
+    base_cols <- c('Name', 'Secondary ID/Reference', 'Barcode', 'Gender', 
+                   'Race', 'Age (years)', 'Donor Disease')
+    
+    all_cols <- all_cols()
+    
+    filt_df <- imported_data() %>% 
+        select(contains(all_cols)) %>% 
+        filter(Name %in% donors(),
+               `Age (years)` >= input$age_input_1_personalized & `Age (years)` <= input$age_input_2_personalized,
+               Gender %in% input$gender_personalized)
+})
