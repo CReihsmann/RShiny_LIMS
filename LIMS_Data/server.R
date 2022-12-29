@@ -37,11 +37,56 @@ shinyServer(function(input, output) {
     output$display_app <- renderUI({
         req(validate_password_module())
         
-        div(
-            class = "bg-success",
-            id = "success_basic",
-            h4("Access confirmed!"),
-            p("Welcome to your basically-secured application!")
+        fluidPage(
+            
+            tags$style(HTML("
+                            .myclass pre {
+                            color: black;
+                            background-color: #FFFFFF")),
+            
+            fluidRow(
+                column(
+                    6,
+                    align = 'center',
+                    h4(strong('Freezer Locations by Donor')),
+                    wellPanel(
+                        selectizeInput(
+                            'donor_freezer',
+                            'Donor Name',
+                            choices = str_sort(unique(imported_data()$Name))
+                        ),
+                        h5(strong('Freezer Location')),
+                        div(class = 'myclass',
+                            verbatimTextOutput(
+                                'freezer'))
+                    )
+                ),
+                column(
+                    6,
+                    align = 'center',
+                    h4(strong('Assorted Info by Donor')),
+                    wellPanel(
+                        selectizeInput(
+                            'donor_assorted',
+                            'Donor Name',
+                            choices = str_sort(unique(imported_data()$Name))
+                        ),
+                        selectizeInput(
+                            'column_assorted',
+                            'Column',
+                            choices = imported_data() %>% 
+                                select(!contains(comments),
+                                       -`Freezer Box Location(s)`,
+                                       -Name) %>% 
+                                colnames()
+                        ),
+                        h5(strong('Selected Data')),
+                        div(class = 'myclass',
+                            verbatimTextOutput(
+                                'assorted'))
+                    )
+                )
+            )
         )
     })
     
@@ -194,6 +239,10 @@ shinyServer(function(input, output) {
                                 'Race:',
                                 choices = str_sort(unique(imported_data()$Race)),
                                 selected = unique(imported_data()$Race)
+                            ),
+                            downloadButton(
+                                'download_lims',
+                                'Download'
                             )
                         ),
                         mainPanel(dataTableOutput('lims_table'))
@@ -242,10 +291,41 @@ shinyServer(function(input, output) {
                                 'Race:',
                                 choices = str_sort(unique(imported_data()$Race)),
                                 selected = unique(imported_data()$Race)
+                            ),
+                            downloadButton(
+                                'download_personalized',
+                                'Download'
                             )
                         ),
                         mainPanel(dataTableOutput('personalized'))
                     )
         )
+    })
+    
+    output$download_lims <- downloadHandler(
+        filename = 'categorized_data.csv',
+        content = function(file) {
+            write_csv(lims_df(), file)
+        }
+    )
+    
+    output$download_personalized <- downloadHandler(
+        filename = 'personalized_data.csv',
+        content = function(file) {
+            write_csv(personalized_df(), file)
+        }
+    )
+    
+    output$freezer <- renderText({
+        imported_data() %>% 
+            filter(Name == input$donor_freezer) %>% 
+            pull(`Freezer Box Location(s)`)
+        
+    })
+    
+    output$assorted <- renderText({
+        imported_data() %>% 
+            filter(Name == input$donor_assorted) %>% 
+            pull(!!as.name(input$column_assorted))
     })
 })

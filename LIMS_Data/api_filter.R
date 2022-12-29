@@ -83,12 +83,6 @@ bargraph_df <- reactive({
         select(contains(graph_cols)) 
 })
 
-# numeric_cols <- reactive({
-#   numeric_cols <- imported_data() %>% 
-#     select(where(is.numeric)) %>% 
-#     colnames()
-# })
-
 histo_df <- reactive({
     
     graph_data <- imported_data() %>% 

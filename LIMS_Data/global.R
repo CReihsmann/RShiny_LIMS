@@ -59,4 +59,4 @@ stock_processed_cols <- c('frozen fixed','flash frozen','paraffin embedding','se
                           'PFA-fixed CMC-embedded','RNA-sequencing')
 long_col_names <- c('Freezer Box Location(s)', 'Cause of Death', 'Hospital Medications', 
                     'Home Medications', 'Past Medical History', 'Comments_Donor Info')
-
+comments <- c('Past Medical History', 'Comments_Donor Info', 'Comments_Patient Chart')

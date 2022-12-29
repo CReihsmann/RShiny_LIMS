@@ -80,7 +80,7 @@ Serology - EBV IgG,Patient Chart,SEROLOGY_EBV_IGG
 Comments_Donor Info,Donor Information,COMMENTS_DONOR_INFORMATION
 Serology - EBV IgM,Patient Chart,SEROLOGY_EBV_IGM
 Diabetic Status Abbr,System,DIABETIC_STATUS_ABBREVIATION
-Comments_Patient chart,Patient Chart,COMMENTS_PATIENT_CHART
+Comments_Patient Chart,Patient Chart,COMMENTS_PATIENT_CHART
 Gender Abbr,System,GENDER_ABBREVIATION
 Age Abbr,System,AGE_ABBREVIATION
 # Blood lots,Sample Lot count,BLOOD_LOT_COUNT

@@ -48,20 +48,12 @@ output$histogram <- renderPlot({
     }
     else if(!is.null(input$histo_initial_filt_choices) & input$histo_group == '') {
         histo_df() %>% 
-            filter(!!as.name(input$histo_initial_filt) == input$histo_initial_filt_choices) %>%
+            filter(!!as.name(input$histo_initial_filt) %in% input$histo_initial_filt_choices) %>%
             ggplot(aes(x=!!as.name(input$numeric_choices))) + 
             geom_histogram(bins = input$bin_slider, alpha = 0.5)+
             scale_color_viridis_d(option = 'magma') +
             scale_fill_viridis_d(option = 'magma')
     }
-    # else if(input$histo_group == '') {
-    #     histo_df() %>% 
-    #         filter(!!as.name(input$histo_initial_filt) == input$histo_initial_filt_choices) %>% 
-    #         ggplot(aes(x=!!as.name(input$numeric_choices))) + 
-    #         geom_histogram(bins = input$bin_slider, alpha = 0.5)+
-    #         scale_color_viridis_d(option = 'magma') +
-    #         scale_fill_viridis_d(option = 'magma')
-    # }
     else {
         histo_df() %>% 
             filter(!!as.name(input$histo_initial_filt) %in% input$histo_initial_filt_choices) %>% 
