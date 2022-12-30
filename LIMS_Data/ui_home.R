@@ -22,7 +22,11 @@ output$display_app <- renderUI({
                     selectizeInput(
                         'donor_freezer',
                         'Donor Name',
-                        choices = str_sort(unique(imported_data()$Name))
+                        choices = str_sort(unique(imported_data()$Name)),
+                        options = list(
+                            placeholder = 'Please select an option below',
+                            onInitialize = I('function() { this.setValue(""); }')
+                        )
                     ),
                     h5(strong('Freezer Location')),
                     div(class = 'myclass',
@@ -38,7 +42,11 @@ output$display_app <- renderUI({
                     selectizeInput(
                         'donor_assorted',
                         'Donor Name',
-                        choices = str_sort(unique(imported_data()$Name))
+                        choices = str_sort(unique(imported_data()$Name)),
+                        options = list(
+                            placeholder = 'Please select an option below',
+                            onInitialize = I('function() { this.setValue(""); }')
+                        )
                     ),
                     selectizeInput(
                         'column_assorted',
@@ -47,12 +55,48 @@ output$display_app <- renderUI({
                             select(!contains(comments),
                                    -`Freezer Box Location(s)`,
                                    -Name) %>% 
-                            colnames()
+                            colnames(),
+                        options = list(
+                            placeholder = 'Please select an option below',
+                            onInitialize = I('function() { this.setValue(""); }')
+                        )
                     ),
                     h5(strong('Selected Data')),
                     div(class = 'myclass',
                         verbatimTextOutput(
                             'assorted'))
+                )
+            )
+        ),
+        fluidRow(
+            column(
+                12,
+                align = 'center',
+                h4(strong('Notes')),
+                wellPanel(
+                    selectizeInput(
+                        'donor_notes',
+                        'Donor Name',
+                        choices = str_sort(unique(imported_data()$Name)),
+                        options = list(
+                            placeholder = 'Please select an option below',
+                            onInitialize = I('function() { this.setValue(""); }')
+                        )
+                    ),
+                    selectizeInput(
+                        'comments_notes',
+                        'Choose Notes',
+                        choices = comments,
+                        options = list(
+                            placeholder = 'Please select an option below',
+                            onInitialize = I('function() { this.setValue(""); }')
+                        )
+                    ),
+                    h5(strong('Selected Notes')),
+                    div(class = 'myclass',
+                        verbatimTextOutput(
+                            'comments'
+                        ))
                 )
             )
         )
@@ -65,6 +109,10 @@ output$display_app <- renderUI({
 
 # renders freezer locations in response to query
 output$freezer <- renderText({
+    shiny::validate(
+        need(input$donor_freezer != '', 'Please Choose Donor')
+    )
+    
     imported_data() %>% 
         filter(Name == input$donor_freezer) %>% 
         pull(`Freezer Box Location(s)`)
@@ -73,7 +121,24 @@ output$freezer <- renderText({
 
 # renders assorted info locations in response to query
 output$assorted <- renderText({
+    shiny::validate(
+        need(input$donor_assorted != '' & input$column_assorted != '',
+             'Please Choose Donor and Non-empty Column field')
+    )
+    
     imported_data() %>% 
         filter(Name == input$donor_assorted) %>% 
         pull(!!as.name(input$column_assorted))
+})
+
+# renders comments in response to query
+output$comments <- renderText({
+    shiny::validate(
+        need(input$donor_assorted != '' & input$comments_notes != '',
+             'Please Choose Donor and Non-empty Notes field')
+    )
+    
+    imported_data() %>% 
+        filter(Name == input$donor_notes) %>% 
+        pull(!!as.name(input$comments_notes))
 })

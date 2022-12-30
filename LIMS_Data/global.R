@@ -19,9 +19,9 @@ data_url = 'https://na1.platformforscience.com/609546918/odata/DONOR'
 headers = c('Content-Type' = 'application/json;odata.metadata=minimal;charset=UTF-8',
             'Prefer'='odata.maxpagesize=1500')
 
-#   -----------------------------------------------
-#    API DATAFRAME FILTERS - FOUND IN API_FILTER.R
-#   -----------------------------------------------
+#   --------------------------------------------------------
+#    API DATAFRAME FILTERS - FOUND IN API_FILTER.R & PLOTS.R
+#   --------------------------------------------------------
 
 # csv with original column name conversions to new column names
 # - called in imported_data()
@@ -87,9 +87,11 @@ stock_processed_cols <- c('frozen fixed','flash frozen','paraffin embedding','se
                           ,'lymph node distribution','isolated T-cells','matrix',
                           'single cell RNA','aDIST','Frozen Unpurified','flash frozen CMC',
                           'PFA-fixed CMC-embedded','RNA-sequencing')
+
 # tells which columns to target for shortening in table output
 # - used in both lims_table() and personalized() outputs
 long_col_names <- c('Freezer Box Location(s)', 'Cause of Death', 'Hospital Medications', 
                     'Home Medications', 'Past Medical History', 'Comments_Donor Info')
+
 # columns to use in ui_home.R to look up individual patient info
 comments <- c('Past Medical History', 'Comments_Donor Info', 'Comments_Patient Chart')

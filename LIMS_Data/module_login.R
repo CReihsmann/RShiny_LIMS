@@ -1,5 +1,8 @@
-#UI component
+#   ---------------
+#    UI COMPONENTS
+#   ---------------
 
+# creates ui for log in
 login_ui <- function(id, title) {
   
   ns <- NS(id) #namespace id
@@ -39,6 +42,7 @@ login_ui <- function(id, title) {
   )
 }
 
+# directs user to home tab from plot tab
 plot_login_ui <- function(id, title) {
   
   ns <- NS(id) #namespace id
@@ -54,6 +58,7 @@ plot_login_ui <- function(id, title) {
   )
 }
 
+# directs user to home tab from tables tab
 table_login_ui <- function(id, title) {
   
   ns <- NS(id) #namespace id
@@ -69,8 +74,12 @@ table_login_ui <- function(id, title) {
   )
 }
 
-# SERVER component
+#   ------------------
+#    SERVER COMPONENTS
+#   ------------------
 
+#' takes username and password from login_ui()
+#' and using metadata api call verifies permissions
 validate_credentials <- function(input, output, session) {
   
   eventReactive(input$login_button,
@@ -99,21 +108,9 @@ validate_credentials <- function(input, output, session) {
   
   
 }
-# generate_data <- function(input, output, session) {
-#   eventReactive(input$login_button,
-#                 {
-#                   response = GET(data_url,
-#                                  add_headers(.headers = headers),
-#                                  authenticate(user = input$lims_email,
-#                                               password = input$lims_password,
-#                                               type = 'basic'))
-#                   data <- content(response, as = 'text') %>%
-#                     fromJSON()
-#                   
-#                   api_data <- data[[2]]
-#                 })
-# }
 
+#' takes username from login_ui() to pass
+#' server and be used for data api call
 username_func <- function(input, output, session) {
   eventReactive(input$login_button,
                 {
@@ -121,6 +118,9 @@ username_func <- function(input, output, session) {
                 })
   
 }
+
+#' takes password from login_ui() to pass
+#' server and be used for data api call
 password_func <- function(input, output, session) {
   eventReactive(input$login_button,
                 {

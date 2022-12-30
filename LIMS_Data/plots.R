@@ -1,3 +1,8 @@
+#   -------
+#    PLOTS
+#   -------
+
+# generates barchart
 output$barChart <- renderPlot({
     
     primary = input$bar_primary
@@ -28,7 +33,12 @@ output$barChart <- renderPlot({
     
 })
 
+# generates histogram
 output$histogram <- renderPlot({
+    
+    shiny::validate(
+        need(input$numeric_choices != '', 'Choose Numeric Column')
+    )
     
     if(is.null(input$histo_initial_filt_choices) & input$histo_group == '') {
         histo_df() %>% 
@@ -65,3 +75,23 @@ output$histogram <- renderPlot({
                                  labels = function(x) str_wrap(x, width = 15)) 
     }
 })
+
+#   ------------------
+#    TIBBLES FOR PLOTS
+#   ------------------
+
+# tibble for bargraphs
+bargraph_df <- reactive({
+    
+    graph_data <- imported_data()%>%
+        select(contains(graph_cols)) 
+})
+
+# tibble for histograms
+histo_df <- reactive({
+    
+    graph_data <- imported_data() %>% 
+        select(numeric_cols, graph_cols) %>% 
+        select(!where(is.Date))
+})
+

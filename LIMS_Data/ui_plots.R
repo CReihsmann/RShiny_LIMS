@@ -28,8 +28,7 @@ output$display_plots <- renderUI({
                         )
                     ),
                     mainPanel(
-                        plotOutput('barChart')
-                        # dataTableOutput('table')
+                        plotOutput('barChart') %>% withSpinner()
                     )
                 ),
                 tabPanel(
@@ -37,7 +36,7 @@ output$display_plots <- renderUI({
                     sidebarPanel(
                         selectizeInput(
                             'numeric_choices',
-                            'Numeric Filter',
+                            'Numeric Column',
                             choices = as.list(numeric_cols),
                             options = list(
                                 placeholder = 'Please select Numeric Column',
@@ -86,10 +85,10 @@ output$display_plots <- renderUI({
                         )
                     ),
                     mainPanel(
-                        plotOutput('histogram')
+                        plotOutput('histogram') %>% withSpinner()
                     )
-                ),
-                tabPanel('Boxplots'))
+                )
+    )
     
 })
 

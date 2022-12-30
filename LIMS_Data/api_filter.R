@@ -1,3 +1,7 @@
+#   ---------------
+#    DATA RETRIEVAL
+#   ---------------
+
 imported_data <- reactive({
     response = GET(data_url,
                    add_headers(.headers = headers),
@@ -19,7 +23,7 @@ imported_data <- reactive({
     filt_cols
     
     
-    #-----made column for age in years & fixed discrepencies in isolation centers
+    #-----made column for age in years & fixed discrepancies in isolation centers
     
     select_data <- filt_cols %>% 
         mutate(`Age (years)` = round(if_else((`Age Units` == 'months'), (Age/12), 
@@ -76,131 +80,3 @@ imported_data <- reactive({
         mutate_at(vars(contains(to_numeric)), as.numeric) 
 })
 
-bargraph_df <- reactive({
-    
-    
-    graph_data <- imported_data()%>%
-        select(contains(graph_cols)) 
-})
-
-histo_df <- reactive({
-    
-    graph_data <- imported_data() %>% 
-        select(numeric_cols, graph_cols) %>% 
-        select(!where(is.Date))
-    
-})
-
-# histo_filters <- observeEvent(req(input$histo_initial_filt!=""), {
-#     updateSelectizeInput(
-#         inputId = 'histo_initial_filt_choices',
-#         choices = histo_df() %>% select(input$histo_initial_filt) %>% unique() %>% as.list(),
-#         options = list(
-#             placeholder = 'Please Select Group Above',
-#             onInitialize = I('function() { this.setValue (""); }')
-#         )
-#     )
-# })
-df_cols <- reactive({
-    # colnames(imported_data())
-    base_cols <- c('Name', 'Secondary ID/Reference', 'Barcode', 'Gender', 
-                   'Race', 'Age (years)', 'Donor Disease')
-    imported_data() %>% 
-        select(!contains(base_cols)) %>% 
-        colnames()
-})
-
-selected_cols <- eventReactive(input$select_cols, {
-    input$personalized
-})
-
-all_cols <- reactive({
-    base_cols <- c('Name', 'Secondary ID/Reference', 'Barcode', 'Gender', 
-                   'Race', 'Age (years)', 'Donor Disease')
-    
-    if(is.null(input$personalized)) {
-        all_cols <- base_cols
-    }
-    else {
-        all_cols <- c(base_cols, input$personalized)
-    }
-})
-
-donors_lims <- reactive({
-    if(is.null(input$donors_lims)) {
-        unique(imported_data()$Name)
-    }
-    else {
-        filtered <- imported_data() %>% 
-            filter(Name %in% input$donors_lims)
-        unique(filtered$Name)
-    }
-})
-
-donors_personalized <- reactive({
-    if(is.null(input$donors_personalized)) {
-        unique(imported_data()$Name)
-    }
-    else {
-        filtered <- imported_data() %>% 
-            filter(Name %in% input$donors_personalized)
-        unique(filtered$Name)
-    }
-})
-
-personalized_df <- reactive({
-    base_cols <- c('Name', 'Secondary ID/Reference', 'Barcode', 'Gender', 
-                   'Race', 'Age (years)', 'Donor Disease')
-    
-    all_cols <- all_cols()
-    
-    filt_df <- imported_data() %>% 
-        select(contains(all_cols)) %>% 
-        filter(Name %in% donors_personalized(),
-               `Age (years)` >= input$age_input_1_personalized & `Age (years)` <= input$age_input_2_personalized,
-               Gender %in% input$gender_personalized,
-               Race %in% input$race_personalized)
-})
-
-lims_df <- reactive({
-    if (input$lims_div == 'Basic Info') {
-        
-        # lims_filt <- imported_data() %>% 
-        #     select(contains(universal_cols))
-        input_cols <- c()
-        
-    }
-    
-    else if(input$lims_div == 'All') {
-        
-        input_cols <- colnames(imported_data())
-        
-        input_cols <- input_cols[! input_cols %in% universal_cols]
-    }
-    
-    else if (input$lims_div == 'Donor Info'){
-        input_cols <- donor_info_cols
-    }
-    else if(input$lims_div == 'HLA'){
-        input_cols <- hla_cols
-    }
-    else if(input$lims_div == 'Patient Info'){
-        input_cols <- patient_cols
-    }
-    else if(input$lims_div == 'Sample Lots'){
-        input_cols <- sample_lot_cols
-    }
-    else {
-        input_cols <- stock_processed_cols
-    }
-    
-    select_cols = c(universal_cols, input_cols)
-    
-    lims_filt <- imported_data() %>%
-        select(contains(select_cols)) %>% 
-        filter(Name %in% donors_lims(),
-               `Age (years)` >= input$age_input_1_lims & `Age (years)` <= input$age_input_2_lims,
-               Gender %in% input$gender_lims,
-               Race %in% input$race_lims)
-    
-})
