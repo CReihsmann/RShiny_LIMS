@@ -91,16 +91,16 @@ histo_df <- reactive({
     
 })
 
-histo_filters <- observeEvent(req(input$histo_initial_filt!=""), {
-    updateSelectizeInput(
-        inputId = 'histo_initial_filt_choices',
-        choices = histo_df() %>% select(input$histo_initial_filt) %>% unique() %>% as.list(),
-        options = list(
-            placeholder = 'Please Select Group Above',
-            onInitialize = I('function() { this.setValue (""); }')
-        )
-    )
-})
+# histo_filters <- observeEvent(req(input$histo_initial_filt!=""), {
+#     updateSelectizeInput(
+#         inputId = 'histo_initial_filt_choices',
+#         choices = histo_df() %>% select(input$histo_initial_filt) %>% unique() %>% as.list(),
+#         options = list(
+#             placeholder = 'Please Select Group Above',
+#             onInitialize = I('function() { this.setValue (""); }')
+#         )
+#     )
+# })
 df_cols <- reactive({
     # colnames(imported_data())
     base_cols <- c('Name', 'Secondary ID/Reference', 'Barcode', 'Gender', 

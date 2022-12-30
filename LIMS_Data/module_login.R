@@ -99,20 +99,20 @@ validate_credentials <- function(input, output, session) {
   
   
 }
-generate_data <- function(input, output, session) {
-  eventReactive(input$login_button,
-                {
-                  response = GET(data_url,
-                                 add_headers(.headers = headers),
-                                 authenticate(user = input$lims_email,
-                                              password = input$lims_password,
-                                              type = 'basic'))
-                  data <- content(response, as = 'text') %>%
-                    fromJSON()
-                  
-                  api_data <- data[[2]]
-                })
-}
+# generate_data <- function(input, output, session) {
+#   eventReactive(input$login_button,
+#                 {
+#                   response = GET(data_url,
+#                                  add_headers(.headers = headers),
+#                                  authenticate(user = input$lims_email,
+#                                               password = input$lims_password,
+#                                               type = 'basic'))
+#                   data <- content(response, as = 'text') %>%
+#                     fromJSON()
+#                   
+#                   api_data <- data[[2]]
+#                 })
+# }
 
 username_func <- function(input, output, session) {
   eventReactive(input$login_button,

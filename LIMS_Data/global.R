@@ -1,18 +1,39 @@
 #-----Packages
 source('dependencies.R', local = T)
 
+#   -------------------------------------------------------------------
+#    API CALL DEFINITIONS/INFO - FOUND IN MODULE_LOGIN.R & API_FILTER.R
+#   -------------------------------------------------------------------
+#
+# url for log in (module_login.R)
+# - called in validate_credentials()
+# -- use metadata api call as reacts much faster
 login_url = 'https://na1.platformforscience.com/609546918/odata/$metadata'
 
+# url for whole database api call (api_filter.R)
+# - called in imported_data()
 data_url = 'https://na1.platformforscience.com/609546918/odata/DONOR'
 
+# headers used in GET() call (api_filter.R)
+# - called in imported_data()
 headers = c('Content-Type' = 'application/json;odata.metadata=minimal;charset=UTF-8',
             'Prefer'='odata.maxpagesize=1500')
 
+#   -----------------------------------------------
+#    API DATAFRAME FILTERS - FOUND IN API_FILTER.R
+#   -----------------------------------------------
+
+# csv with original column name conversions to new column names
+# - called in imported_data()
 col_conv <- read_csv('20221206-col_conversions.csv')
 
+# base columns used for plot generation
+# - called in bargraph_df() & histo_df()
 graph_cols <- c('Date Pancreas/Islets received', 'Isolation Center','Race',
                 'Donor Disease','Gender','Age (years)', 'BMI', 'Age Groups', 'Year')
 
+# all numeric columns for histogram
+# - called in histo_df()
 numeric_cols <- c('Disease Duration (yrs)','Age','Height (cm)','Weight (kg)','BMI',
                   'C-peptide Level (ng/mL)','Pancreas Weight (g)','Cold ischemic Time (hrs)',
                   '# Blood lots','# FACS lots','# Islet lots','# Islet Transplant Lots',
@@ -23,9 +44,18 @@ numeric_cols <- c('Disease Duration (yrs)','Age','Height (cm)','Weight (kg)','BM
                   'aDIST','Frozen Unpurified','flash frozen CMC','PFA-fixed CMC-embedded',
                   'RNA-sequencing')
 
+#   ---------------
+#    WIDGET CHOICES
+#   ---------------
+
+# choices for initial histogram filter which will be used to update choices
 histo_filt <- c('Isolation Center','Race','Donor Disease','Gender','Age Groups')
 
-#-----LIMS classifications
+#   --------------
+#    COLUMN LISTS
+#   --------------
+
+# for category table
 universal_cols <- c('Name','Barcode','Donor UNOS ID','Secondary ID/Reference','Age (years)',
                     'Gender', 'Race','Freezer Box Location(s)')
 donor_info_cols <- c('Donor Disease','Disease Duration (yrs)','Date Pancreas/Islets received',
@@ -57,6 +87,9 @@ stock_processed_cols <- c('frozen fixed','flash frozen','paraffin embedding','se
                           ,'lymph node distribution','isolated T-cells','matrix',
                           'single cell RNA','aDIST','Frozen Unpurified','flash frozen CMC',
                           'PFA-fixed CMC-embedded','RNA-sequencing')
+# tells which columns to target for shortening in table output
+# - used in both lims_table() and personalized() outputs
 long_col_names <- c('Freezer Box Location(s)', 'Cause of Death', 'Hospital Medications', 
                     'Home Medications', 'Past Medical History', 'Comments_Donor Info')
+# columns to use in ui_home.R to look up individual patient info
 comments <- c('Past Medical History', 'Comments_Donor Info', 'Comments_Patient Chart')
