@@ -105,7 +105,7 @@ output$display_tables <- renderUI({
                                          'Unknown')   
                         ),
                         checkboxGroupInput(
-                            'race_personalized',
+                           'race_personalized',
                             'Race:',
                             choices = str_sort(unique(imported_data()$Race)),
                             selected = unique(imported_data()$Race)

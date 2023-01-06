@@ -31,6 +31,10 @@ shinyUI(
       
       uiOutput(outputId = 'display_tables')
       
-    )
+    )#,
+    # tabPanel(
+    #   title = 'testing',
+    #   dataTableOutput('test')
+    # )
   )
 )

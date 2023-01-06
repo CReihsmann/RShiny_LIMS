@@ -47,6 +47,16 @@ output$personalized <-renderDataTable({
     )
     
 })
+output$donor_search <- renderDataTable({
+  
+  test_df <- donor_search_table() %>%
+    filter(Name %in% input$search_name,
+           Barcode %in% input$search_barcode,
+           Age %in% input$search_age,
+           `Age Units` %in% input$search_ageUnits)
+  
+  datatable(test_df)
+})
 
 #   ------------------------
 #    TIBBLES FOR DATA FRAMES
@@ -163,4 +173,11 @@ donors_personalized <- reactive({
             filter(Name %in% input$donors_personalized)
         unique(filtered$Name)
     }
+})
+
+donor_search_table <- reactive({
+  gs4_auth(cache = '.secrets', email = 'alpowerslab@gmail.com')
+  read_sheet('https://docs.google.com/spreadsheets/d/10oHfplMnj5eRoQ5kqoXrBN_lbz7bVf_4yXL4kxVn2Ww/edit#gid=0')
+  
+  
 })
