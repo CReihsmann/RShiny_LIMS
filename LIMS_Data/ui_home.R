@@ -134,7 +134,7 @@ output$assorted <- renderText({
 # renders comments in response to query
 output$comments <- renderText({
     shiny::validate(
-        need(input$donor_assorted != '' & input$comments_notes != '',
+        need(input$donor_notes != '' & input$comments_notes != '',
              'Please Choose Donor and Non-empty Notes field')
     )
     
