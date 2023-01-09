@@ -104,36 +104,6 @@ output$display_app <- renderUI({
                 ),
               tabPanel(
                 'Donor Search',
-                sidebarPanel(
-                  selectizeInput(
-                    'search_name',
-                    'Full Name',
-                    choices = unique(donor_search_table()$Name),
-                    multiple = T
-                  ),
-                  selectizeInput(
-                    'search_barcode',
-                    'Donor ID',
-                    choices = unique(donor_search_table()$Barcode),
-                    multiple = T
-                  ),
-                  selectizeInput(
-                    'search_age',
-                    'Age',
-                    choices = unique(donor_search_table()$Age),
-                    multiple = T
-                  ),
-                  checkboxGroupInput(
-                    'search_ageUnits',
-                    'Age Unit',
-                    choices = list('years',
-                                   'months',
-                                   'days'),
-                    selected = list('years',
-                                    'months',
-                                    'days')
-                  )
-                ),
                 mainPanel(dataTableOutput('donor_search'))
               ))
 })
